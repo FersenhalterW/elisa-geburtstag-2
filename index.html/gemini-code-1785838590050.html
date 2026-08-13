@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles Gute zum Geburtstag, Elisa! ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%);
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 2.2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a4a4a;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #ffffff;
+            color: #ff4b2b;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .btn-love {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+
+        .btn-love:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            color: white;
+        }
+
+        .content-box {
+            display: none;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            max-height: 450px;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .content-box h3 {
+            color: #ff416c;
+            margin-bottom: 15px;
+        }
+
+        .uploader {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #ff9a9e;
+        }
+
+        .uploader input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #ff416c;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: #ff4b2b;
+        }
+
+        /* Galerie Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        .img-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .delete-img-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 75, 43, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 24px;
+            text-align: center;
+        }
+
+        /* Song-Liste */
+        .song-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .song-item {
+            padding: 12px;
+            background: #fff;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .song-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .song-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff4b2b;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        audio {
+            width: 100%;
+            height: 35px;
+        }
+
+        /* Animation & Lightbox */
+        .heart {
+            position: fixed;
+            font-size: 24px;
+            top: -1vh;
+            animation: fall 3s linear forwards;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Alles Gute zum Geburtstag! ❤️</h1>
+
+        <div class="btn-group">
+            <button class="btn" onclick="toggleSection('photos')">📸 Unsere Bilder</button>
+            <button class="btn" onclick="toggleSection('songs')">🎵 Unsere Songs</button>
+            <button class="btn btn-love" onclick="createHearts()">Ich liebe dich ❤️</button>
+        </div>
+
+        <!-- Galerie -->
+        <div id="photos" class="content-box">
+            <h3>Unsere schönsten Momente</h3>
+            
+            <div class="uploader">
+                <p style="font-size:0.85rem; color:#666; margin-bottom:8px;">Weitere Bilder hinzufügen:</p>
+                <label for="imageInput" class="upload-btn">➕ Bild hinzufügen</label>
+                <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageUpload(event)">
+            </div>
+
+            <div class="gallery" id="galleryGrid">
+                <!-- Standardbilder -->
+                <div class="img-wrapper"><img src="elisa gb 1.jpg" alt="Moment 1" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 2.jpg" alt="Moment 2" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 3.jpg" alt="Moment 3" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 4.jpg" alt="Moment 4" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 5.jpg" alt="Moment 5" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 6.jpg" alt="Moment 6" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 7.jpg" alt="Moment 7" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 8.jpg" alt="Moment 8" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 9.jpg" alt="Moment 9" onclick="openLightbox(this.src)"></div>
+                <div class="img-wrapper"><img src="elisa gb 10.jpg" alt="Moment 10" onclick="openLightbox(this.src)"></div>
+            </div>
+        </div>
+
+        <!-- Songs -->
+        <div id="songs" class="content-box">
+            <h3>Unsere Lieder</h3>
+            
+            <div class="uploader">
+                <p style="font-size:0.85rem; color:#666; margin-bottom:8px;">MP3-Dateien hinzufügen:</p>
+                <label for="musicInput" class="upload-btn">➕ Song hinzufügen</label>
+                <input type="file" id="musicInput" accept="audio/*" multiple onchange="handleSongUpload(event)">
+            </div>
+
+            <ul class="song-list" id="songList"></ul>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Vollbild">
+    </div>
+
+    <script>
+        // --- IndexedDB für Songs und Extra-Bilder ---
+        let db;
+        const request = indexedDB.open("MediaDatabase", 2);
+
+        request.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("songs")) {
+                db.createObjectStore("songs", { keyPath: "id", autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains("images")) {
+                db.createObjectStore("images", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = function(e) {
+            db = e.target.result;
+            loadStoredSongs();
+            loadStoredImages();
+        };
+
+        // --- Bild-Upload & Speicher-Logik ---
+        function saveImageToDB(file) {
+            const transaction = db.transaction(["images"], "readwrite");
+            const store = transaction.objectStore("images");
+            const req = store.add({ name: file.name, file: file });
+            req.onsuccess = () => loadStoredImages();
+        }
+
+        function loadStoredImages() {
+            const gallery = document.getElementById('galleryGrid');
+            // Entferne zuvor geladene benutzerdefinierte Bilder
+            document.querySelectorAll('.custom-img-wrapper').forEach(el => el.remove());
+
+            const transaction = db.transaction(["images"], "readonly");
+            const store = transaction.objectStore("images");
+            const req = store.openCursor();
+
+            req.onsuccess = function(e) {
+                const cursor = e.target.result;
+                if (cursor) {
+                    const imgData = cursor.value;
+                    renderImageItem(imgData.id, imgData.file);
+                    cursor.continue();
+                }
+            };
+        }
+
+        function renderImageItem(id, fileBlob) {
+            const gallery = document.getElementById('galleryGrid');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'img-wrapper custom-img-wrapper';
+
+            const img = document.createElement('img');
+            const imgUrl = URL.createObjectURL(fileBlob);
+            img.src = imgUrl;
+            img.onclick = () => openLightbox(imgUrl);
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-img-btn';
+            delBtn.innerText = '✕';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteImage(id);
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(delBtn);
+            gallery.appendChild(wrapper);
+        }
+
+        function deleteImage(id) {
+            const transaction = db.transaction(["images"], "readwrite");
+            transaction.objectStore("images").delete(id);
+            transaction.oncomplete = () => loadStoredImages();
+        }
+
+        function handleImageUpload(event) {
+            for (let file of event.target.files) {
+                saveImageToDB(file);
+            }
+        }
+
+        // --- Song-Upload & Speicher-Logik ---
+        function saveSongToDB(file) {
+            const transaction = db.transaction(["songs"], "readwrite");
+            const store = transaction.objectStore("songs");
+            const req = store.add({ name: file.name, file: file });
+            req.onsuccess = () => loadStoredSongs();
+        }
+
+        function loadStoredSongs() {
+            const songList = document.getElementById('songList');
+            songList.innerHTML = '';
+
+            const transaction = db.transaction(["songs"], "readonly");
+            const store = transaction.objectStore("songs");
+            const req = store.openCursor();
+
+            let count = 0;
+            req.onsuccess = function(e) {
+                const cursor = e.target.result;
+                if (cursor) {
+                    count++;
+                    const song = cursor.value;
+                    renderSongItem(song.id, song.name, song.file);
+                    cursor.continue();
+                } else if (count === 0) {
+                    songList.innerHTML = '<li style="text-align: center; color: #888; font-size: 0.9rem;">Noch keine Songs gespeichert. Nutze den Button oben!</li>';
+                }
+            };
+        }
+
+        function renderSongItem(id, name, fileBlob) {
+            const songList = document.getElementById('songList');
+            const songItem = document.createElement('li');
+            songItem.className = 'song-item';
+
+            const header = document.createElement('div');
+            header.className = 'song-header';
+
+            const songTitle = document.createElement('span');
+            songTitle.className = 'song-title';
+            songTitle.innerText = "🎵 " + name.replace(/\.[^/.]+$/, "");
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerText = '🗑️ Löschen';
+            deleteBtn.onclick = () => deleteSong(id);
+
+            header.appendChild(songTitle);
+            header.appendChild(deleteBtn);
+
+            const audioPlayer = document.createElement('audio');
+            audioPlayer.controls = true;
+            audioPlayer.src = URL.createObjectURL(fileBlob);
+
+            songItem.appendChild(header);
+            songItem.appendChild(audioPlayer);
+            songList.appendChild(songItem);
+        }
+
+        function deleteSong(id) {
+            const transaction = db.transaction(["songs"], "readwrite");
+            transaction.objectStore("songs").delete(id);
+            transaction.oncomplete = () => loadStoredSongs();
+        }
+
+        function handleSongUpload(event) {
+            for (let file of event.target.files) {
+                saveSongToDB(file);
+            }
+        }
+
+        // --- UI & Animationen ---
+        function toggleSection(id) {
+            const photos = document.getElementById('photos');
+            const songs = document.getElementById('songs');
+
+            if (id === 'photos') {
+                photos.style.display = photos.style.display === 'block' ? 'none' : 'block';
+                songs.style.display = 'none';
+            } else if (id === 'songs') {
+                songs.style.display = songs.style.display === 'block' ? 'none' : 'block';
+                photos.style.display = 'none';
+            }
+        }
+
+        function createHearts() {
+            const heartIcons = ['❤️', '💖', '💕', '💗', '💓'];
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+                    heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 50);
+            }
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
