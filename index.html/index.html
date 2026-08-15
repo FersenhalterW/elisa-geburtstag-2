@@ -4,210 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alles Gute zum Geburtstag, Elisa! ❤️</title>
-    
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%);
-            padding: 20px;
-        }
-
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(15px);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            max-width: 600px;
-            width: 100%;
-        }
-
-        h1 {
-            color: #fff;
-            margin-bottom: 25px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        .uploader {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 16px;
-            border: 2px dashed #ff9a9e;
-        }
-
-        .upload-btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            color: white;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-
-        .upload-btn:hover {
-            transform: scale(1.05);
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .status-msg {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #ff416c;
-            font-weight: 600;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 12px;
-            max-height: 450px;
-            overflow-y: auto;
-            padding: 5px;
-        }
-
-        .gallery img {
-            width: 100%;
-            height: 130px;
-            object-fit: cover;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .gallery img:hover {
-            transform: scale(1.04);
-        }
-
-        /* Lightbox (Vollbild) */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.85);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 85vh;
-            border-radius: 12px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #ff9a9e, #fecfef, #a1c4fd); padding: 20px; overflow-x: hidden; }
+        .container { text-align: center; background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(15px); padding: 25px; border-radius: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
+        h1 { color: #fff; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 12px 24px; background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; border-radius: 25px; cursor: pointer; font-weight: bold; border: none; transition: transform 0.2s; margin: 10px; }
+        .btn:hover { transform: scale(1.05); }
+        .music-section { background: white; padding: 15px; border-radius: 16px; margin: 20px 0; text-align: left; }
+        .song { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+        audio { width: 100%; }
+        .uploader { margin-bottom: 20px; padding: 15px; background: white; border-radius: 16px; border: 2px dashed #ff9a9e; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; max-height: 250px; overflow-y: auto; }
+        .gallery img { width: 100%; height: 110px; object-fit: cover; border-radius: 12px; cursor: pointer; }
+        .heart { position: fixed; font-size: 28px; pointer-events: none; animation: floatUp 2.5s ease-out forwards; z-index: 9999; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+        #fileInput { display: none; }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Unsere gemeinsame Galerie ❤️</h1>
+        <h1>Unsere Galerie ❤️</h1>
+        
+        <!-- NEU: Herz-Button -->
+        <button class="btn" onclick="spawnHearts()">❤️ Ich liebe dich</button>
+
+        <!-- NEU: Musik-Sektion -->
+        <div class="music-section">
+            <h3 style="color: #ff416c;">Unsere Songs 🎵</h3>
+            <div class="song">
+                <label style="font-size: 0.85rem; color: #555;">Unser Lied (Lieddatei einfach 'song1.mp3' nennen):</label>
+                <audio controls><source src="song1.mp3" type="audio/mpeg"></audio>
+            </div>
+        </div>
 
         <div class="uploader">
-            <p style="margin-bottom: 10px; color: #555;">Füge neue Bilder für uns beide hinzu:</p>
-            <label for="fileInput" class="upload-btn">📸 Bild hochladen</label>
+            <label for="fileInput" class="btn">📸 Bild hochladen</label>
             <input type="file" id="fileInput" accept="image/*" multiple onchange="uploadImages(event)">
-            <div id="status" class="status-msg"></div>
+            <div id="status" style="margin-top:5px; color:#ff416c; font-weight:bold;"></div>
         </div>
 
-        <div class="gallery" id="galleryGrid">
-            <!-- Bilder werden hier automatisch geladen -->
-        </div>
-    </div>
-
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <img id="lightboxImg" src="" alt="Vollbild">
+        <div class="gallery" id="galleryGrid"></div>
     </div>
 
     <script>
-        // Deine konfigurierten Projektdaten
         const firebaseConfig = {
-            apiKey: "692943107043", // <--- HIER DEINEN API-KEY EINTRAGEN
+            apiKey: "692943107043", // <-- Deinen API-Key hier eintragen
             authDomain: "elisa-geburtstag.firebaseapp.com",
             projectId: "elisa-geburtstag",
             storageBucket: "elisa-geburtstag.appspot.com",
             messagingSenderId: "692943107043",
-            appId: "elisa-geburtstag"  // <--- HIER DEINE APP-ID EINTRAGEN
+            appId: "elisa-geburtstag"   // <-- Deine App-ID hier eintragen
         };
-
-        // Firebase Initialisieren
         firebase.initializeApp(firebaseConfig);
         const storage = firebase.storage();
         const db = firebase.firestore();
 
-        const galleryGrid = document.getElementById('galleryGrid');
-        const statusDiv = document.getElementById('status');
-
-        // 1. Bilder in Echtzeit aus Firestore laden
-        db.collection("photos").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-            galleryGrid.innerHTML = "";
-            snapshot.forEach((doc) => {
-                const data = doc.data();
+        db.collection("photos").orderBy("timestamp", "desc").onSnapshot(s => {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = "";
+            s.forEach(doc => {
                 const img = document.createElement('img');
-                img.src = data.url;
-                img.onclick = () => openLightbox(data.url);
-                galleryGrid.appendChild(img);
+                img.src = doc.data().url;
+                grid.appendChild(img);
             });
         });
 
-        // 2. Bilder hochladen & in der Cloud speichern
-        async function uploadImages(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-
-            statusDiv.innerText = "Lade hoch...";
-
+        async function uploadImages(e) {
+            const files = e.target.files; if (!files.length) return;
+            const status = document.getElementById('status');
+            status.innerText = "Lade hoch...";
             for (let file of files) {
                 try {
-                    const storageRef = storage.ref(`images/${Date.now()}_${file.name}`);
-                    const uploadTask = await storageRef.put(file);
-                    const downloadURL = await uploadTask.ref.getDownloadURL();
-
-                    await db.collection("photos").add({
-                        url: downloadURL,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } catch (error) {
-                    console.error("Fehler beim Hochladen:", error);
-                    statusDiv.innerText = "Fehler beim Hochladen!";
-                    return;
-                }
+                    const ref = storage.ref(`images/${Date.now()}_${file.name}`);
+                    const task = await ref.put(file);
+                    const url = await task.ref.getDownloadURL();
+                    await db.collection("photos").add({ url, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                } catch (err) { status.innerText = "Fehler!"; return; }
             }
-
-            statusDiv.innerText = "Erfolgreich hochgeladen! ❤️";
-            setTimeout(() => { statusDiv.innerText = ""; }, 3000);
+            status.innerText = "Erfolgreich! ❤️"; setTimeout(() => status.innerText = "", 3000);
         }
 
-        // Lightbox
-        function openLightbox(src) {
-            document.getElementById('lightboxImg').src = src;
-            document.getElementById('lightbox').style.display = 'flex';
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
+        // NEU: Herzen spawnen lassen
+        function spawnHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerText = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }
         }
     </script>
 </body>
