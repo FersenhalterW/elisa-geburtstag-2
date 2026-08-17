@@ -4,162 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alles Gute zum Geburtstag, Elisa! ❤️</title>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%); padding: 20px; overflow-x: hidden; position: relative; }
-        .container { text-align: center; z-index: 10; background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(15px); padding: 30px; border-radius: 24px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2); border: 1px solid rgba(255, 255, 255, 0.5); max-width: 550px; width: 100%; }
-        h1 { color: #fff; margin-bottom: 25px; text-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 2.2rem; }
-        .btn-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
-        .btn { background: rgba(255, 255, 255, 0.9); border: none; padding: 16px 24px; font-size: 1.1rem; font-weight: 600; color: #4a4a4a; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-decoration: none; display: inline-block; }
-        .btn:hover { transform: translateY(-3px); background: #ffffff; color: #ff4b2b; box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
-        .btn-love { background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; }
-        .btn-love:hover { background: linear-gradient(45deg, #ff4b2b, #ff416c); }
-        .content-box { display: none; margin-top: 20px; background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 20px; max-height: 450px; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .content-box h3 { color: #ff416c; margin-bottom: 15px; }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
-        .gallery img { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: transform 0.2s; }
-        .gallery img:hover { transform: scale(1.05); }
-        .song-list { list-style: none; text-align: left; }
-        .song-item { padding: 12px; background: #fff; margin-bottom: 10px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 6px; }
-        .song-title { font-weight: 600; color: #333; font-size: 0.95rem; }
-        audio { width: 100%; height: 35px; }
-        .heart { position: fixed; font-size: 24px; top: -1vh; animation: fall 3s linear forwards; z-index: 1000; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); opacity: 0; } }
-        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; }
-        .lightbox img { max-width: 90%; max-height: 85vh; border-radius: 12px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%);
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 2.2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a4a4a;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #ffffff;
+            color: #ff4b2b;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .btn-love {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+
+        .btn-love:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            color: white;
+        }
+
+        .content-box {
+            display: none;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            max-height: 450px;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .content-box h3 {
+            color: #ff416c;
+            margin-bottom: 15px;
+        }
+
+        /* Galerie Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        .img-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Song-Liste */
+        .song-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .song-item {
+            padding: 12px;
+            background: #fff;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .song-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        audio {
+            width: 100%;
+            height: 35px;
+        }
+
+        /* Animation & Lightbox */
+        .heart {
+            position: fixed;
+            font-size: 24px;
+            top: -1vh;
+            animation: fall 3s linear forwards;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
         <h1>Alles Gute zum Geburtstag! ❤️</h1>
+
         <div class="btn-group">
             <button class="btn" onclick="toggleSection('photos')">📸 Unsere Bilder</button>
             <button class="btn" onclick="toggleSection('songs')">🎵 Unsere Songs</button>
             <button class="btn btn-love" onclick="createHearts()">Ich liebe dich ❤️</button>
         </div>
+
+        <!-- Galerie -->
         <div id="photos" class="content-box">
             <h3>Unsere schönsten Momente</h3>
-            <div style="margin-bottom: 15px; padding: 12px; background: rgba(255,65,108,0.05); border: 2px dashed #ff416c; border-radius: 12px;">
-                <label for="fileInput" class="btn" style="padding: 8px 16px; font-size: 0.9rem; background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white;">📸 Bild hinzufügen</label>
-                <input type="file" id="fileInput" accept="image/*" multiple onchange="uploadImages(event)" style="display: none;">
-                <div id="status" style="margin-top: 5px; font-size: 0.85rem; color: #ff416c; font-weight: bold;"></div>
-            </div>
             <div class="gallery" id="galleryGrid">
-                <!-- Statische Bilder (Fallback) -->
-                <img src="elisa gb 1.jpg" alt="Moment 1" onclick="openLightbox(this.src)">
-                <img src="elisa gb 2.jpg" alt="Moment 2" onclick="openLightbox(this.src)">
+                <!-- Bilder werden automatisch per JavaScript geladen -->
             </div>
         </div>
+
+        <!-- Songs -->
         <div id="songs" class="content-box">
             <h3>Unsere Lieder</h3>
-            <!-- NEU: Song-Uploadbereich -->
-            <div style="margin-bottom: 15px; padding: 12px; background: rgba(161,196,253,0.1); border: 2px dashed #a1c4fd; border-radius: 12px;">
-                <label for="songInput" class="btn" style="padding: 8px 16px; font-size: 0.9rem; background: linear-gradient(45deg, #a1c4fd, #c2e9fb); color: #333;">🎵 Lied hinzufügen</label>
-                <input type="file" id="songInput" accept="audio/mpeg" onchange="uploadSongs(event)" style="display: none;">
-                <div id="songStatus" style="margin-top: 5px; font-size: 0.85rem; color: #4a4a4a; font-weight: bold;"></div>
-            </div>
-            <ul class="song-list" id="songGrid">
-                <!-- Statische Songs -->
-                <li class="song-item">
-                    <span class="song-title">🎵 Unser Song 1</span>
-                    <audio controls preload="metadata"><source src="song1.mp3" type="audio/mpeg"></audio>
-                </li>
+            <ul class="song-list" id="songList">
+                <!-- Songs werden automatisch per JavaScript geladen -->
             </ul>
         </div>
     </div>
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src=""></div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Vollbild">
+    </div>
+
     <script>
-        const firebaseConfig = {
-            apiKey: "692943107043", // <-- Deinen API-Key hier eintragen
-            authDomain: "elisa-geburtstag.firebaseapp.com",
-            projectId: "elisa-geburtstag",
-            storageBucket: "elisa-geburtstag.appspot.com",
-            messagingSenderId: "692943107043",
-            appId: "elisa-geburtstag"   // <-- Deine App-ID hier eintragen
-        };
-        firebase.initializeApp(firebaseConfig);
-        const storage = firebase.storage();
-        const db = firebase.firestore();
-        const galleryGrid = document.getElementById('galleryGrid');
-        const songGrid = document.getElementById('songGrid');
-        const statusDiv = document.getElementById('status');
-        const songStatus = document.getElementById('songStatus');
+        const maxImages = 100; // Maximale Anzahl an Bildern
+        const maxSongs = 10;   // Maximale Anzahl an Songs
 
-        // Bilder in Echtzeit abrufen
-        db.collection("photos").orderBy("timestamp", "desc").onSnapshot(snap => {
-            document.querySelectorAll('.dynamic-img').forEach(el => el.remove());
-            snap.forEach(doc => {
+        // Lädt automatisch alle Bilder (elisa gb 1.jpg bis maxImages), die auf GitHub existieren
+        function loadGallery() {
+            const gallery = document.getElementById('galleryGrid');
+            gallery.innerHTML = '';
+
+            for (let i = 1; i <= maxImages; i++) {
+                const imgName = `elisa gb ${i}.jpg`;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'img-wrapper';
+
                 const img = document.createElement('img');
-                img.src = doc.data().url; img.className = 'dynamic-img';
-                img.onclick = () => openLightbox(doc.data().url);
-                galleryGrid.insertBefore(img, galleryGrid.firstChild);
-            });
-        });
+                img.src = imgName;
+                img.alt = `Moment ${i}`;
+                img.onclick = () => openLightbox(img.src);
 
-        // Lieder in Echtzeit abrufen
-        db.collection("songs").orderBy("timestamp", "desc").onSnapshot(snap => {
-            document.querySelectorAll('.dynamic-song').forEach(el => el.remove());
-            snap.forEach(doc => {
-                const data = doc.data();
-                const li = document.createElement('li');
-                li.className = 'song-item dynamic-song';
-                li.innerHTML = `<span class="song-title">🎵 ${data.name}</span><audio controls preload="metadata"><source src="${data.url}" type="audio/mpeg"></audio>`;
-                songGrid.insertBefore(li, songGrid.firstChild);
-            });
-        });
+                // Falls das Bild (noch) nicht auf GitHub hochgeladen wurde, wird es ausgeblendet
+                img.onerror = function() {
+                    wrapper.remove();
+                };
 
-        // Bilder hochladen
-        async function uploadImages(e) {
-            const files = e.target.files; if (!files.length) return;
-            statusDiv.innerText = "Lade hoch...";
-            for (let file of files) {
-                try {
-                    const ref = storage.ref(`images/${Date.now()}_${file.name}`);
-                    const task = await ref.put(file);
-                    const url = await task.ref.getDownloadURL();
-                    await db.collection("photos").add({ url, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                } catch (err) { statusDiv.innerText = "Fehler beim Upload!"; return; }
+                wrapper.appendChild(img);
+                gallery.appendChild(wrapper);
             }
-            statusDiv.innerText = "Erfolgreich hochgeladen! ❤️"; setTimeout(() => statusDiv.innerText = "", 3000);
         }
 
-        // Lieder hochladen
-        async function uploadSongs(e) {
-            const files = e.target.files; if (!files.length) return;
-            songStatus.innerText = "Lade Lied hoch...";
-            for (let file of files) {
-                try {
-                    const ref = storage.ref(`songs/${Date.now()}_${file.name}`);
-                    const task = await ref.put(file);
-                    const url = await task.ref.getDownloadURL();
-                    await db.collection("songs").add({ name: file.name, url: url, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                } catch (err) { songStatus.innerText = "Fehler beim Upload!"; return; }
+        // Lädt automatisch alle Songs (song1.mp3 bis maxSongs), die auf GitHub existieren
+        function loadSongs() {
+            const songList = document.getElementById('songList');
+            songList.innerHTML = '';
+
+            for (let i = 1; i <= maxSongs; i++) {
+                const songName = `song${i}.mp3`;
+                const songItem = document.createElement('li');
+                songItem.className = 'song-item';
+
+                const title = document.createElement('span');
+                title.className = 'song-title';
+                title.innerText = `🎵 Song ${i}`;
+
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.src = songName;
+
+                // Falls der Song nicht existiert, blendet er sich aus
+                audio.onerror = function() {
+                    songItem.remove();
+                };
+
+                songItem.appendChild(title);
+                songItem.appendChild(audio);
+                songList.appendChild(songItem);
             }
-            songStatus.innerText = "Lied erfolgreich hochgeladen! 🎵"; setTimeout(() => songStatus.innerText = "", 3000);
         }
 
+        // Initiales Laden ausführen
+        loadGallery();
+        loadSongs();
+
+        // UI & Animationen
         function toggleSection(id) {
-            const p = document.getElementById('photos'), s = document.getElementById('songs');
-            if (id === 'photos') { p.style.display = p.style.display === 'block' ? 'none' : 'block'; s.style.display = 'none'; }
-            else { s.style.display = s.style.display === 'block' ? 'none' : 'block'; p.style.display = 'none'; }
+            const photos = document.getElementById('photos');
+            const songs = document.getElementById('songs');
+
+            if (id === 'photos') {
+                photos.style.display = photos.style.display === 'block' ? 'none' : 'block';
+                songs.style.display = 'none';
+            } else if (id === 'songs') {
+                songs.style.display = songs.style.display === 'block' ? 'none' : 'block';
+                photos.style.display = 'none';
+            }
         }
+
         function createHearts() {
-            const icons = ['❤️', '💖', '💕', '💗', '💓'];
+            const heartIcons = ['❤️', '💖', '💕', '💗', '💓'];
             for (let i = 0; i < 60; i++) {
                 setTimeout(() => {
-                    const h = document.createElement('div'); h.classList.add('heart');
-                    h.innerText = icons[Math.floor(Math.random() * icons.length)];
-                    h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = Math.random() * 2 + 2 + 's';
-                    h.style.fontSize = Math.random() * 20 + 20 + 'px'; document.body.appendChild(h);
-                    setTimeout(() => h.remove(), 4000);
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+                    heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 4000);
                 }, i * 50);
             }
         }
-        function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').style.display = 'flex'; }
-        function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
     </script>
 </body>
 </html>
