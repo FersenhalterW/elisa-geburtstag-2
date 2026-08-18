@@ -203,17 +203,13 @@
         <!-- Galerie -->
         <div id="photos" class="content-box">
             <h3>Unsere schönsten Momente</h3>
-            <div class="gallery" id="galleryGrid">
-                <!-- Bilder werden automatisch per JavaScript geladen -->
-            </div>
+            <div class="gallery" id="galleryGrid"></div>
         </div>
 
         <!-- Songs -->
         <div id="songs" class="content-box">
             <h3>Unsere Lieder</h3>
-            <ul class="song-list" id="songList">
-                <!-- Songs werden automatisch per JavaScript geladen -->
-            </ul>
+            <ul class="song-list" id="songList"></ul>
         </div>
     </div>
 
@@ -222,10 +218,9 @@
     </div>
 
     <script>
-        const maxImages = 100; // Maximale Anzahl an Bildern
-        const maxSongs = 10;   // Maximale Anzahl an Songs
+        const maxImages = 100;
 
-        // Lädt automatisch alle Bilder (elisa gb 1.jpg bis maxImages), die auf GitHub existieren
+        // Lädt Bilder automatisch (elisa gb 1.jpg bis maxImages)
         function loadGallery() {
             const gallery = document.getElementById('galleryGrid');
             gallery.innerHTML = '';
@@ -240,7 +235,6 @@
                 img.alt = `Moment ${i}`;
                 img.onclick = () => openLightbox(img.src);
 
-                // Falls das Bild (noch) nicht auf GitHub hochgeladen wurde, wird es ausgeblendet
                 img.onerror = function() {
                     wrapper.remove();
                 };
@@ -250,25 +244,30 @@
             }
         }
 
-        // Lädt automatisch alle Songs (song1.mp3 bis maxSongs), die auf GitHub existieren
+        // Lädt die 3 Songs direkt
         function loadSongs() {
             const songList = document.getElementById('songList');
             songList.innerHTML = '';
 
-            for (let i = 1; i <= maxSongs; i++) {
-                const songName = `song${i}.mp3`;
+            const songs = [
+                { title: '🎵 Song 1', file: 'song1.mp3' },
+                { title: '🎵 Song 2', file: 'song2.mp3' },
+                { title: '🎵 Song 3', file: 'song3.mp3' }
+            ];
+
+            songs.forEach((song) => {
                 const songItem = document.createElement('li');
                 songItem.className = 'song-item';
 
                 const title = document.createElement('span');
                 title.className = 'song-title';
-                title.innerText = `🎵 Song ${i}`;
+                title.innerText = song.title;
 
                 const audio = document.createElement('audio');
                 audio.controls = true;
-                audio.src = songName;
+                audio.src = song.file;
 
-                // Falls der Song nicht existiert, blendet er sich aus
+                // Falls eine Datei nicht gefunden wird, blendet sich dieser Song aus
                 audio.onerror = function() {
                     songItem.remove();
                 };
@@ -276,14 +275,14 @@
                 songItem.appendChild(title);
                 songItem.appendChild(audio);
                 songList.appendChild(songItem);
-            }
+            });
         }
 
-        // Initiales Laden ausführen
+        // Aufrufen
         loadGallery();
         loadSongs();
 
-        // UI & Animationen
+        // Navigation & Animation
         function toggleSection(id) {
             const photos = document.getElementById('photos');
             const songs = document.getElementById('songs');
